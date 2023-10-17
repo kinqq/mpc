@@ -27,7 +27,7 @@
     <script>
       function countProblems() {
         const inputStr = document.getElementById("inputStr").value;
-        const problems = countMathProblems(inputStr);
+        const problems = [...new Set(countMathProblems(inputStr))];
         if (inputStr.length === 0) {
           alert("You typed something wrong.");
           return;
@@ -35,8 +35,8 @@
         const problemCount = problems.length;
         const resultElement = document.getElementById("result");
 
-        resultElement.textContent =
-          problems.join(", ") + `\nTotal ${problemCount} problems.`;
+        resultElement.innerHTML =
+          `<b>Total ${problemCount} Problems.</b><br />` + problems.join(", ");
       }
 
       function countMathProblems(inputStr) {
