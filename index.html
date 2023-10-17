@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
+    <title>Math Problem Counter</title>
+  </head>
+  <body>
+    <h1>Math Problem Counter</h1>
+    <p>
+      Enter a string of math problems, and click the "Count" button to see the
+      result.
+    </p>
+
+    <form id="problemForm" onsubmit="countProblems(); return false;">
+      <label for="inputStr">Enter math problems:</label>
+      <input
+        type="text"
+        id="inputStr"
+        placeholder="E.g., 1, 6, 10-15, 20-70 MO5"
+      />
+      <button type="submit">Count</button>
+    </form>
+
+    <p id="result"></p>
+    <script>
+      function countProblems() {
+        const inputStr = document.getElementById("inputStr").value;
+        const problems = countMathProblems(inputStr);
+        if (inputStr.length === 0) {
+          alert("You typed something wrong.");
+          return;
+        }
+        const problemCount = problems.length;
+        const resultElement = document.getElementById("result");
+
+        resultElement.textContent =
+          problems.join(", ") + `\nTotal ${problemCount} problems.`;
+      }
+
+      function countMathProblems(inputStr) {
+        function parseRange(rangeStr) {
+          const parts = rangeStr.split("-");
+          return [parseInt(parts[0]), parseInt(parts[1])];
+        }
+
+        function parseMultiRange(multiRangeStr) {
+          const problems = [];
+          const ranges = multiRangeStr.split(",");
+          for (const rangeStr of ranges) {
+            if (rangeStr.includes("MO")) {
+              const strippedRangeStr = rangeStr.replace(" MO", "");
+              const [start, end] = parseRange(strippedRangeStr.slice(0, -1));
+              let step = start;
+              const stepSize = parseInt(strippedRangeStr.slice(-1));
+              while (step <= end) {
+                problems.push(step);
+                step += stepSize;
+              }
+            } else {
+              if (rangeStr.includes("-")) {
+                const [start, end] = parseRange(rangeStr);
+                problems.push(
+                  ...Array.from(
+                    { length: end - start + 1 },
+                    (_, i) => start + i
+                  )
+                );
+              } else {
+                problems.push(parseInt(rangeStr));
+              }
+            }
+          }
+          return problems;
+        }
+
+        const ranges = inputStr.split(",");
+        const allProblems = [];
+        for (const range of ranges) {
+          const problemsInRange = parseMultiRange(range);
+          allProblems.push(...problemsInRange);
+        }
+
+        return allProblems.sort((a, b) => a - b);
+      }
+    </script>
+  </body>
+</html>
