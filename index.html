@@ -20,11 +20,69 @@
         id="inputStr"
         placeholder="E.g., 1, 6, 10-15, 20-70 MO5"
       />
-      <button type="submit">Count</button>
+      <button id="submitBtn" type="submit">Count</button>
     </form>
 
     <p id="result"></p>
+
+    <h4>Try it with examples</h4>
+    <div>
+      <button style="display: inline" onclick="showExample('1, 3-7')">
+        Example 1
+      </button>
+      <p style="display: inline">1, 3-7</p>
+    </div>
+    <div>
+      <button
+        style="display: inline"
+        onclick="showExample('1, 6, 10-15, 20-70 MO5')"
+      >
+        Example 2
+      </button>
+      <p style="display: inline">1, 6, 10-15, 20-70 MO5</p>
+    </div>
+    <div>
+      <button
+        style="display: inline"
+        onclick="showExample('3, 8, 13, and 30 - 90 MO5')"
+      >
+        Example 3
+      </button>
+      <p style="display: inline">3, 8, 13, and 30 - 90 MO5</p>
+    </div>
+    <div>
+      <button
+        style="display: inline"
+        onclick="showExample('93 - 11 MO3, 113, and 114')"
+      >
+        Example 4
+      </button>
+      <p style="display: inline">93 - 11 MO3, 113, and 114</p>
+    </div>
+    <div>
+      <button
+        style="display: inline"
+        onclick="showExample('4 - 35 skip MO3, 42, and 43')"
+      >
+        Example 5
+      </button>
+      <p style="display: inline">4 - 35 skip MO3, 42, and 43</p>
+    </div>
+    <div>
+      <button style="display: inline" onclick="showExample('5MO5-35')">
+        Example 6
+      </button>
+      <p style="display: inline">
+        5MO5-35 : works no matter where MO{N} located
+      </p>
+    </div>
+
     <script>
+      function showExample(exam) {
+        document.getElementById("inputStr").value = exam;
+        document.getElementById("submitBtn").click();
+      }
+
       function countProblems() {
         const inputStr = document
           .getElementById("inputStr")
