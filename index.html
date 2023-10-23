@@ -52,14 +52,15 @@
           const ranges = multiRangeStr.split(",");
           for (const rangeStr of ranges) {
             if (rangeStr.includes("skip MO")) {
-              const strippedRangeStr = rangeStr.replace("skip MO", "");
-
+              const strippedRangeStr = rangeStr.replace(/skip MO./, "");
               const [start, end] = parseRange(strippedRangeStr.slice(0, -1));
+
               const excludedProblems = [];
-              let step = start;
+
               const stepSize = parseInt(
                 rangeStr[rangeStr.indexOf("skip MO") + 7]
               );
+              let step = start + (stepSize - (start % stepSize));
               while (step <= end) {
                 excludedProblems.push(step);
                 step += stepSize;
