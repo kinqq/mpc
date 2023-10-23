@@ -51,7 +51,27 @@
           const problems = [];
           const ranges = multiRangeStr.split(",");
           for (const rangeStr of ranges) {
-            if (rangeStr.includes("MO")) {
+            if (rangeStr.includes("skip MO")) {
+              const strippedRangeStr = rangeStr.replace("skip MO", "");
+              const [start, end] = parseRange(strippedRangeStr.slice(0, -1));
+              const excludedProblems = [];
+              let step = start;
+              const stepSize = parseInt(strippedRangeStr.slice(-1));
+              while (step <= end) {
+                excludedProblems.push(step);
+                step += stepSize;
+              }
+
+              const tempProblems = Array.from(Array(end + 1).keys()).slice(
+                start
+              );
+              const includedProblems = tempProblems.filter(
+                (item) => !excludedProblems.includes(item)
+              );
+              for (const incProblem of includedProblems) {
+                problems.push(incProblem);
+              }
+            } else if (rangeStr.includes("MO")) {
               const strippedRangeStr = rangeStr.replace(" MO", "");
               const [start, end] = parseRange(strippedRangeStr.slice(0, -1));
               let step = start;
